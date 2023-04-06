@@ -82,14 +82,17 @@ int main(int, char*[]) {
     // Get window size. It may start out different from the requested size and
     // will change if the user resizes the window
     int width, height;
-    glfwGetWindowSize(window, &width, &height);
-    // Set viewport. This is the pixel rectangle we want to draw into
-    glViewport(0, 0, width, height);  // The entire window
 
     glfwSwapInterval(0);  // Do not wait for screen refresh between frames
 
     // Main loop
     while (!glfwWindowShouldClose(window)) {
+        util::displayFPS(window);
+
+        glfwGetWindowSize(window, &width, &height);
+        // Set viewport. This is the pixel rectangle we want to draw into
+        glViewport(0, 0, width, height);  // The entire window
+
         // Set the clear color to a dark gray (RGBA)
         glClearColor(0.3f, 0.3f, 0.3f, 0.0f);
         // Clear the color and depth buffers for drawing
