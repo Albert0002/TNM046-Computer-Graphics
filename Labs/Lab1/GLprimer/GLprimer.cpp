@@ -34,10 +34,21 @@
 
 #include "Utilities.hpp"
 
+#include <vector>
+
 /*
  * main(int argc, char* argv[]) - the standard C++ entry point for the program
  */
 int main(int, char*[]) {
+    // Vertex coordinates (x,y,z) for three vertices
+    const std::vector<GLfloat> vertexArrayData = {
+        -1.0f, -1.0f, 0.0f, // First vertex, xyz
+        1.0f, -1.0f, 0.0f,  // Second vertex, xyz
+        0.0f, 1.0f, 0.0f    // Third vertex, xyz
+    };
+
+    const std::vector<GLuint> indexArrayData = {0, 1, 2};
+
     // Initialise GLFW
     glfwInit();
 
