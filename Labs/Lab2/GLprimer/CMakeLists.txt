@@ -36,6 +36,8 @@ set(SOURCE_FILES
 	Texture.cpp
 	TriangleSoup.cpp
 	Utilities.cpp
+	fragment.glsl
+	vertex.glsl
 )
 
 add_executable(tnm046-labs ${SOURCE_FILES} ${HEADER_FILES})
