@@ -89,12 +89,25 @@ int main(int, char*[]) {
         0.5f, 0.0f, 1.0f  // Purple
     };
 
+    //Complex numbers with float?
+
     std::array<GLfloat, 16> matT = {
         1.0f, 0.0f, 0.0f, 0.0f,
         0.0f, 1.0f, 0.0f, 0.0f,
         0.0f, 0.0f, 1.0f, 0.0f,
+        0.5f, 0.5f, 0.5f, 1.0f
+    };
+
+    std::array<GLfloat, 16> matR = {
+        -1.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, -1.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 1.0f, 0.0f,
         0.0f, 0.0f, 0.0f, 1.0f
     };
+
+    util::mat4print(util::mat4mult(matR, matT));
+
+    return 0;
 
     /*
 
@@ -195,6 +208,14 @@ int main(int, char*[]) {
         std::cout << "Unable to locate variable 'time' in shader!\n";
     }
 
+    // Add matrices to vertex shader
+    GLint locationT = glGetUniformLocation(myShader.id(), "T");
+    glUseProgram(myShader.id()); //when to use? multiple? each?
+    glUniformMatrix4fv(locationT, 1, GL_FALSE, matT.data());
+
+    GLint locationR = glGetUniformLocation(myShader.id(), "R");
+    //glUseProgram(myShader.id());
+    glUniformMatrix4fv(locationR, 1, GL_FALSE, matR.data());
 
     // Show some useful information on the GL context
     std::cout << "GL vendor:       " << glGetString(GL_VENDOR)

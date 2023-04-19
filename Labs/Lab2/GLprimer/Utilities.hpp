@@ -27,4 +27,7 @@ namespace util {
 
 	void mat4print(const std::array<float, 16>& m);
 
+	std::array<float, 16> mat4mult(const std::array<float, 16>& m1,
+		const std::array<float, 16>& m2);
+
 }  // namespace util

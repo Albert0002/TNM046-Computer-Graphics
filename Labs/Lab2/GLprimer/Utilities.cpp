@@ -51,4 +51,19 @@ namespace util {
         printf("%6.2f %6.2f %6.2f %6.2f\n", m[3], m[7], m[11], m[15]);
         printf("\n");
     }
+
+    std::array<float, 16> mat4mult(const std::array<float, 16>& m1, const std::array<float, 16>& m2) {
+        std::array<float, 16> results = {0};
+
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                for (int k = 0; k < 4; k++) {
+                    results[4 * i + j] += m1[4 * k + j] * m2[4 * i + k];
+                }
+            }
+        }
+
+        return results;
+    }
+
 }  // namespace util
