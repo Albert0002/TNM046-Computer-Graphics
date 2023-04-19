@@ -105,7 +105,11 @@ int main(int, char*[]) {
         0.0f, 0.0f, 0.0f, 1.0f
     };
 
-    util::mat4print(util::mat4mult(matR, matT));
+    std::cout << "Angle: PI/2 \n";
+    util::mat4print(util::mat4roty(M_PI/4));
+
+    std::cout << "\nTranslate (x, y, z) = (1, 2, 3) \n";
+    util::mat4print(util::mat4translate(1, 2, 3));
 
     return 0;
 

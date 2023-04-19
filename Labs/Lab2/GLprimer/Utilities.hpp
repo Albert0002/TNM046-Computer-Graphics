@@ -30,8 +30,11 @@ namespace util {
 	std::array<float, 16> mat4mult(const std::array<float, 16>& m1,
 		const std::array<float, 16>& m2);
 
-	std::array<float, 16> mat4rotx(float angle); //4-dim Rotation matrix around x-axis. Radians. 
-	std::array<float, 16> mat4roty(float angle); //4-dim Rotation matrix around y-axis. Radians. 
-	std::array<float, 16> mat4rotz(float angle); //4-dim Rotation matrix around z-axis. Radians. 
+	std::array<float, 16> mat4indentity();			// Returns the 4D identity matrix
+	std::array<float, 16> mat4rotx(float angle);	// Rotation matrix around x-axis. Radians. 
+	std::array<float, 16> mat4roty(float angle);	// Rotation matrix around y-axis. Radians. 
+	std::array<float, 16> mat4rotz(float angle);	// Rotation matrix around z-axis. Radians. 
+	std::array<float, 16> mat4scale(float scale);	// Uniform scaling matrix
+    std::array<float, 16> mat4translate(float x, float y, float z); // Translation matrix
 
 }  // namespace util

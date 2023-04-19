@@ -66,6 +66,15 @@ namespace util {
         return results;
     }
 
+    std::array<float, 16> mat4identity() {
+        return {
+            1.0f, 0.0f, 0.0f, 0.0f,
+            0.0f, 1.0f, 0.0f, 0.0f,
+            0.0f, 0.0f, 1.0f, 0.0f,
+            0.0f, 0.0f, 0.0f, 1.0f
+        };
+    }
+
     std::array<float, 16> mat4rotx(float angle) {
         return {
             1.0f, 0.0f,        0.0f,         0.0f,
@@ -90,6 +99,24 @@ namespace util {
             -sinf(angle), cosf(angle), 0.0f, 0.0f,
             0.0f,         0.0f,        1.0f, 0.0f, 
             0.0f,         0.0f,        0.0f, 0.0f
+        };
+    }
+
+    std::array<float, 16> mat4scale(float scale) {
+        return {
+            scale, 0.0f, 0.0f, 0.0f,
+            0.0f, scale, 0.0f, 0.0f,
+            0.0f, 0.0f, scale, 0.0f,
+            0.0f, 0.0f, 0.0f, 1.0f
+        };
+    }
+
+    std::array<float, 16> mat4translate(float x, float y, float z) {
+        return {
+            1.0f, 0.0f, 0.0f, 0.0f,
+            0.0f, 1.0f, 0.0f, 0.0f,
+            0.0f, 0.0f, 1.0f, 0.0f,
+            x,    y,    z,    1.0f
         };
     }
 
