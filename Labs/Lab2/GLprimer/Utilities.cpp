@@ -66,4 +66,31 @@ namespace util {
         return results;
     }
 
+    std::array<float, 16> mat4rotx(float angle) {
+        return {
+            1.0f, 0.0f,        0.0f,         0.0f,
+            0.0f, cosf(angle), sinf(angle),  0.0f,
+            0.0f, -sinf(angle), cosf(angle), 0.0f,
+            0.0f, 0.0f,        0.0f,         1.0f
+        };
+    }
+
+    std::array<float, 16> mat4roty(float angle) {
+        return {
+            cosf(angle), 0.0f, -sinf(angle), 0.0f,
+            0.0f,        1.0f, 0.0f,         0.0f,
+            sinf(angle), 0.0f, cosf(angle),  0.0f,
+            0.0f,        0.0f, 0.0f,         1.0f
+        };
+    }
+
+    std::array<float, 16> mat4rotz(float angle) {
+        return {
+            cosf(angle),  sinf(angle), 0.0f, 0.0f,
+            -sinf(angle), cosf(angle), 0.0f, 0.0f,
+            0.0f,         0.0f,        1.0f, 0.0f, 
+            0.0f,         0.0f,        0.0f, 0.0f
+        };
+    }
+
 }  // namespace util
