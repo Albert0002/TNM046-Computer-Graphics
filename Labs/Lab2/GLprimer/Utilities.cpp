@@ -12,34 +12,43 @@
 #include <cstdio>
 #include <iostream>
 
+
 namespace util {
 
-double displayFPS(GLFWwindow* window) {
-    static int frames = 0;
-    static double fps = 0.0;
+    double displayFPS(GLFWwindow* window) {
+        static int frames = 0;
+        static double fps = 0.0;
 
-    static double t0 = glfwGetTime();  // Gets number of seconds since glfwInit()
+        static double t0 = glfwGetTime();  // Gets number of seconds since glfwInit()
 
-    double t = glfwGetTime();  // Get current time
+        double t = glfwGetTime();  // Get current time
 
-    // update fps only once every second
-    if (t - t0 >= 1.0) {
-        fps = static_cast<double>(frames) / (t - t0);
-        t0 = t;
-        frames = 0;
+        // update fps only once every second
+        if (t - t0 >= 1.0) {
+            fps = static_cast<double>(frames) / (t - t0);
+            t0 = t;
+            frames = 0;
+        }
+
+        // update the window title
+        if (frames == 0) {
+            char title[201];
+            // convert fps to milliseconds
+            double frametime = (fps > 0.0) ? 1000.0 / fps : 0.0;
+            snprintf(title, 200, "TNM046: %.2f ms/frame (%.1f FPS)", frametime, fps);
+            glfwSetWindowTitle(window, title);
+        }
+
+        ++frames;
+        return fps;
     }
 
-    // update the window title
-    if (frames == 0) {
-        char title[201];
-        // convert fps to milliseconds
-        double frametime = (fps > 0.0) ? 1000.0 / fps : 0.0;
-        snprintf(title, 200, "TNM046: %.2f ms/frame (%.1f FPS)", frametime, fps);
-        glfwSetWindowTitle(window, title);
+    void mat4print(const std::array<float, 16>& m) {
+        printf("Matrix:\n");
+        printf("%6.2f %6.2f %6.2f %6.2f\n", m[0], m[4], m[8], m[12]);
+        printf("%6.2f %6.2f %6.2f %6.2f\n", m[1], m[5], m[9], m[13]);
+        printf("%6.2f %6.2f %6.2f %6.2f\n", m[2], m[6], m[10], m[14]);
+        printf("%6.2f %6.2f %6.2f %6.2f\n", m[3], m[7], m[11], m[15]);
+        printf("\n");
     }
-
-    ++frames;
-    return fps;
-}
-
 }  // namespace util

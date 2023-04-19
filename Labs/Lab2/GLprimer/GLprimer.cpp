@@ -35,6 +35,7 @@
 #include "Utilities.hpp"
 
 #include <vector>
+#include <array>
 #include "Shader.hpp"
 
 
@@ -87,6 +88,51 @@ int main(int, char*[]) {
         0.0f, 1.0f, 0.0f, // Green
         0.5f, 0.0f, 1.0f  // Purple
     };
+
+    std::array<GLfloat, 16> matT = {
+        1.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 1.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 1.0f, 0.0f,
+        0.0f, 0.0f, 0.0f, 1.0f
+    };
+
+    /*
+
+    //TRANSFORMATION MATRICIES
+    std::array<GLfloat, 16> matA = {
+        0.0f, 1.0f, 0.0f, 0.0f,
+        -1.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 1.0f, 0.0f,
+        0.0f, 0.0f, 0.0f, 1.0f
+    };
+
+    std::array<GLfloat, 16> matB = {
+        1.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 1.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 1.0f, 0.0f,
+        0.0f, 2.0f, 0.0f, 1.0f
+    };
+
+    std::array<GLfloat, 16> matAB = {
+        0.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 0.0f, 0.0f
+    };
+
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            for (int k = 0; k < 4; k++) {
+                matAB[4 * i + j] += matA[4 * k + j] * matB[4 * i + k];
+            }
+        }
+    }
+
+    util::mat4print(matAB);
+
+
+    return 0;
+    */
 
     Shader myShader;
 
@@ -143,6 +189,13 @@ int main(int, char*[]) {
 
     myShader.createShader("vertex.glsl", "fragment.glsl");
 
+    //Time uniform variable
+    GLint locationTime = glGetUniformLocation(myShader.id(), "time");
+    if (locationTime == -1) {
+        std::cout << "Unable to locate variable 'time' in shader!\n";
+    }
+
+
     // Show some useful information on the GL context
     std::cout << "GL vendor:       " << glGetString(GL_VENDOR)
               << "\nGL renderer:     " << glGetString(GL_RENDERER)
@@ -168,6 +221,10 @@ int main(int, char*[]) {
         // Clear the color and depth buffers for drawing
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        float time = static_cast<float>(glfwGetTime()); // Number of seconds since the program was started
+        glUseProgram(myShader.id());                    // Activate the shader to set its variables
+        glUniform1f(locationTime, time);                // Copy the value to the shader
+        std::cout << time << "\n";
         /* ---- Rendering code should go here ---- */
 
         glUseProgram(myShader.id());

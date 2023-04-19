@@ -1,5 +1,7 @@
 #version 330 core
 
+uniform float time;
+
 out vec4 finalcolor;
 in vec3 interpolatedColor;
 
