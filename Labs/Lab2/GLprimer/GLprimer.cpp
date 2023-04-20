@@ -89,7 +89,49 @@ int main(int, char*[]) {
         0.5f, 0.0f, 1.0f  // Purple
     };
 
-    //Complex numbers with float?
+    const std::vector<GLfloat> cubeVertexArrayData = {
+        -1.0f, -1.0f, -1.0f,  // p0
+        -1.0f, -1.0f, 1.0f,   // p1
+        -1.0f, 1.0f,  1.0f,   // p2
+        -1.0f, 1.0f,  -1.0f,  // p3
+        1.0f,  -1.0f, -1.0f,  // p4
+        1.0f,  -1.0f, 1.0f,   // p5
+        1.0f,  1.0f,  1.0f,   // p6
+        1.0f,  1.0f,  -1.0f   // p7
+    };
+
+    const std::vector<GLuint> cubeIndexArrayData = {
+        0, 1, 3,  // t0
+        1, 2, 3,  // t1
+        4, 0, 7,  // t2
+        0, 3, 7,  // t3
+        5, 4, 6,  // t4
+        4, 7, 6,  // t5
+        1, 5, 2,  // t6
+        5, 6, 2,  // t7
+        3, 2, 7,  // t8
+        2, 6, 7,  // t9
+        1, 0, 5,  // t10
+        0, 4, 5   // t11
+    };
+
+    const std::vector<GLfloat> cubeColorArrayData = {
+        1.0f, 0.0f, 0.0f,  // Red
+        0.0f, 1.0f, 0.0f,  // Green
+        0.0f, 0.0f, 1.0f,  // Blue
+
+        1.0f, 0.5f, 0.0f,  // Orange
+        0.0f, 1.0f, 0.0f,  // Green
+        0.5f, 0.0f, 1.0f,  // Purple
+
+        0.5f, 0.5f, 0.5f,  // Brown?
+        1.0f, 1.0f, 1.0f,  // White
+        0.0f, 0.0f, 0.0f,  // Black
+
+        1.0f, 1.0f, 0.0f,  // ?
+        0.0f, 1.0f, 1.0f,  // ?
+        1.0f, 0.0f, 1.0f,  // ?
+    };
 
     std::array<GLfloat, 16> matT = {
         1.0f, 0.0f, 0.0f, 0.0f,
@@ -105,15 +147,23 @@ int main(int, char*[]) {
         0.0f, 0.0f, 0.0f, 1.0f
     };
 
-    std::cout << "Angle: PI/2 \n";
-    util::mat4print(util::mat4roty(M_PI/4));
+    // View transpose (scale & rotation)
+    const std::array<GLfloat, 16> matViev = util::mat4mult(util::mat4scale(0.05), util::mat4rotx(M_PI / 4));
 
-    std::cout << "\nTranslate (x, y, z) = (1, 2, 3) \n";
-    util::mat4print(util::mat4translate(1, 2, 3));
-
-    return 0;
+    // Translate cube (along x)
+    const std::array<GLfloat, 16> matTranspose = util::mat4translate(18, 0, 0);
 
     /*
+
+    std::cout << "MatB Angle: PI/2 \n";
+    util::mat4print(util::mat4roty(M_PI/4));
+
+    std::cout << "\nMatA Translation (x, y, z) = (1, 2, 3) \n";
+    util::mat4print(util::mat4translate(1, 2, 3));
+
+    std::cout << "\n \n";
+    util::mat4print(util::mat4mult(util::mat4roty(M_PI / 4), util::mat4translate(1, 2, 3)));
+
 
     //TRANSFORMATION MATRICIES
     std::array<GLfloat, 16> matA = {
@@ -195,11 +245,11 @@ int main(int, char*[]) {
     glBindVertexArray(vertexArrayID);
 
     //Create the vertex buffer objects for attribute locations 0 and 1
-    //(the list of vertex coordinates and the list of verte colors)
-    GLuint vertexBufferID = createVertexBuffer(0, 3, vertexArrayData);
-    GLuint colorBufferID = createVertexBuffer(1, 3, colorArrayData);
+    //(the list of vertex coordinates and the list of vertex colors)
+    GLuint vertexBufferID = createVertexBuffer(0, 3, cubeVertexArrayData);
+    GLuint colorBufferID = createVertexBuffer(1, 3, cubeColorArrayData);
     //Create the index buffer object (the list of triangles)
-    GLuint indexBufferID = createIndexBuffer(indexArrayData);
+    GLuint indexBufferID = createIndexBuffer(cubeIndexArrayData);
 
     //Deactivate the vertex array object again to be nice
     glBindVertexArray(0);
@@ -211,15 +261,14 @@ int main(int, char*[]) {
     if (locationTime == -1) {
         std::cout << "Unable to locate variable 'time' in shader!\n";
     }
-
+    
+    /*
     // Add matrices to vertex shader
     GLint locationT = glGetUniformLocation(myShader.id(), "T");
     glUseProgram(myShader.id()); //when to use? multiple? each?
-    glUniformMatrix4fv(locationT, 1, GL_FALSE, matT.data());
-
-    GLint locationR = glGetUniformLocation(myShader.id(), "R");
-    //glUseProgram(myShader.id());
-    glUniformMatrix4fv(locationR, 1, GL_FALSE, matR.data());
+    glUniformMatrix4fv(locationT, 1, GL_FALSE, util::mat4scale(0.5).data());
+    //glUniformMatrix4fv(locationT, 1, GL_FALSE, util::mat4translate(0.5, 0.5, -2).data());
+    */
 
     // Show some useful information on the GL context
     std::cout << "GL vendor:       " << glGetString(GL_VENDOR)
@@ -232,6 +281,8 @@ int main(int, char*[]) {
     int width, height;
 
     glfwSwapInterval(0);  // Do not wait for screen refresh between frames
+
+    glEnable(GL_CULL_FACE);
 
     // Main loop
     while (!glfwWindowShouldClose(window)) {
@@ -250,6 +301,30 @@ int main(int, char*[]) {
         glUseProgram(myShader.id());                    // Activate the shader to set its variables
         glUniform1f(locationTime, time);                // Copy the value to the shader
         std::cout << time << "\n";
+         
+        GLint locationRx = glGetUniformLocation(myShader.id(), "Rx");
+        glUseProgram(myShader.id());
+        glUniformMatrix4fv(locationRx, 1, GL_FALSE, util::mat4rotx(M_PI/4).data());
+
+        GLint locationRy = glGetUniformLocation(myShader.id(), "Ry");
+        glUseProgram(myShader.id());
+        glUniformMatrix4fv(locationRy, 1, GL_FALSE, util::mat4roty(time).data());  // 2PI revolutions?
+
+        GLint locationRz = glGetUniformLocation(myShader.id(), "Rz");
+        glUseProgram(myShader.id());
+        glUniformMatrix4fv(locationRz, 1, GL_FALSE, util::mat4rotz(M_PI/4).data());
+
+
+        std::array<GLfloat, 16> planeT = {util::mat4mult(
+            matViev, util::mat4mult(
+                util::mat4roty(time), util::mat4mult(
+                    matTranspose, util::mat4roty(time * 3))))
+        };
+
+        GLint locationT = glGetUniformLocation(myShader.id(), "T");
+        glUseProgram(myShader.id());
+        glUniformMatrix4fv(locationT, 1, GL_FALSE, planeT.data());
+
         /* ---- Rendering code should go here ---- */
 
         glUseProgram(myShader.id());
@@ -260,13 +335,26 @@ int main(int, char*[]) {
         // When the last argument of glDrawElements is nullptr, it means
         // "use the previously bound index buffer". (This is not obvious.)
         // The index buffer is part of the VAO state and is bound with it.
-        glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
+
+        // BACK AND FRONT FACE CULLING WORKS, but is this method correct?
+
+        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);
+
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);  // Render both sides with GL_FILL
+        glCullFace(GL_BACK);                        // Cull backside?
+        
+        
+        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);  // Render both sides with GL_LINE
+        glCullFace(GL_FRONT);                       // Cull frontside line render?
+        
 
         // Swap buffers, display the image and prepare for next frame
         glfwSwapBuffers(window);
 
         // Poll events (read keyboard and mouse input)
         glfwPollEvents();
+
 
         // Exit if the ESC key is pressed (and also if the window is closed)
         if (glfwGetKey(window, GLFW_KEY_ESCAPE)) {
