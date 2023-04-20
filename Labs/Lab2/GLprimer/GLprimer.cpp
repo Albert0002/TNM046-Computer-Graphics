@@ -151,55 +151,7 @@ int main(int, char*[]) {
     const std::array<GLfloat, 16> matViev = util::mat4mult(util::mat4scale(0.05), util::mat4rotx(M_PI / 4));
 
     // Translate cube (along x)
-    const std::array<GLfloat, 16> matTranspose = util::mat4translate(18, 0, 0);
-
-    /*
-
-    std::cout << "MatB Angle: PI/2 \n";
-    util::mat4print(util::mat4roty(M_PI/4));
-
-    std::cout << "\nMatA Translation (x, y, z) = (1, 2, 3) \n";
-    util::mat4print(util::mat4translate(1, 2, 3));
-
-    std::cout << "\n \n";
-    util::mat4print(util::mat4mult(util::mat4roty(M_PI / 4), util::mat4translate(1, 2, 3)));
-
-
-    //TRANSFORMATION MATRICIES
-    std::array<GLfloat, 16> matA = {
-        0.0f, 1.0f, 0.0f, 0.0f,
-        -1.0f, 0.0f, 0.0f, 0.0f,
-        0.0f, 0.0f, 1.0f, 0.0f,
-        0.0f, 0.0f, 0.0f, 1.0f
-    };
-
-    std::array<GLfloat, 16> matB = {
-        1.0f, 0.0f, 0.0f, 0.0f,
-        0.0f, 1.0f, 0.0f, 0.0f,
-        0.0f, 0.0f, 1.0f, 0.0f,
-        0.0f, 2.0f, 0.0f, 1.0f
-    };
-
-    std::array<GLfloat, 16> matAB = {
-        0.0f, 0.0f, 0.0f, 0.0f,
-        0.0f, 0.0f, 0.0f, 0.0f,
-        0.0f, 0.0f, 0.0f, 0.0f,
-        0.0f, 0.0f, 0.0f, 0.0f
-    };
-
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 4; j++) {
-            for (int k = 0; k < 4; k++) {
-                matAB[4 * i + j] += matA[4 * k + j] * matB[4 * i + k];
-            }
-        }
-    }
-
-    util::mat4print(matAB);
-
-
-    return 0;
-    */
+    const std::array<GLfloat, 16> matTranslate = util::mat4translate(18, 0, 0);
 
     Shader myShader;
 
@@ -261,14 +213,6 @@ int main(int, char*[]) {
     if (locationTime == -1) {
         std::cout << "Unable to locate variable 'time' in shader!\n";
     }
-    
-    /*
-    // Add matrices to vertex shader
-    GLint locationT = glGetUniformLocation(myShader.id(), "T");
-    glUseProgram(myShader.id()); //when to use? multiple? each?
-    glUniformMatrix4fv(locationT, 1, GL_FALSE, util::mat4scale(0.5).data());
-    //glUniformMatrix4fv(locationT, 1, GL_FALSE, util::mat4translate(0.5, 0.5, -2).data());
-    */
 
     // Show some useful information on the GL context
     std::cout << "GL vendor:       " << glGetString(GL_VENDOR)
@@ -300,25 +244,27 @@ int main(int, char*[]) {
         float time = static_cast<float>(glfwGetTime()); // Number of seconds since the program was started
         glUseProgram(myShader.id());                    // Activate the shader to set its variables
         glUniform1f(locationTime, time);                // Copy the value to the shader
-        std::cout << time << "\n";
-         
+        //std::cout << time << "\n";
+        
+        /*
         GLint locationRx = glGetUniformLocation(myShader.id(), "Rx");
         glUseProgram(myShader.id());
         glUniformMatrix4fv(locationRx, 1, GL_FALSE, util::mat4rotx(M_PI/4).data());
-
+        */
         GLint locationRy = glGetUniformLocation(myShader.id(), "Ry");
-        glUseProgram(myShader.id());
-        glUniformMatrix4fv(locationRy, 1, GL_FALSE, util::mat4roty(time).data());  // 2PI revolutions?
-
+        //glUseProgram(myShader.id());
+        glUniformMatrix4fv(locationRy, 1, GL_FALSE, util::mat4roty(time/24).data());  // 2PI revolutions?
+        /*
         GLint locationRz = glGetUniformLocation(myShader.id(), "Rz");
         glUseProgram(myShader.id());
         glUniformMatrix4fv(locationRz, 1, GL_FALSE, util::mat4rotz(M_PI/4).data());
+        */
 
 
         std::array<GLfloat, 16> planeT = {util::mat4mult(
-            matViev, util::mat4mult(
-                util::mat4roty(time), util::mat4mult(
-                    matTranspose, util::mat4roty(time * 3))))
+            matViev, util::mat4mult(                            // V * (R_Orbit * (T * R_spin))
+                util::mat4roty(-time), util::mat4mult(           // R_Orbit * (T * R_spin)
+                    matTranslate, util::mat4roty(time * 6))))   // T * R_spin
         };
 
         GLint locationT = glGetUniformLocation(myShader.id(), "T");
