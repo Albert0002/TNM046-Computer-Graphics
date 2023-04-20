@@ -77,10 +77,10 @@ namespace util {
 
     std::array<float, 16> mat4rotx(float angle) {
         return {
-            1.0f, 0.0f,        0.0f,         0.0f,
-            0.0f, cosf(angle), sinf(angle),  0.0f,
+            1.0f, 0.0f,         0.0f,        0.0f,
+            0.0f, cosf(angle),  sinf(angle), 0.0f,
             0.0f, -sinf(angle), cosf(angle), 0.0f,
-            0.0f, 0.0f,        0.0f,         1.0f
+            0.0f, 0.0f,         0.0f,        1.0f
         };
     }
 
