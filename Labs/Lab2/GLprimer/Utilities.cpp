@@ -98,7 +98,7 @@ namespace util {
             cosf(angle),  sinf(angle), 0.0f, 0.0f,
             -sinf(angle), cosf(angle), 0.0f, 0.0f,
             0.0f,         0.0f,        1.0f, 0.0f, 
-            0.0f,         0.0f,        0.0f, 0.0f
+            0.0f,         0.0f,        0.0f, 1.0f
         };
     }
 
