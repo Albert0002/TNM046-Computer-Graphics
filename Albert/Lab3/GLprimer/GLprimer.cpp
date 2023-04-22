@@ -226,7 +226,7 @@ int main(int, char*[]) {
 
     glfwSwapInterval(0);  // Do not wait for screen refresh between frames
 
-    glEnable(GL_CULL_FACE);
+    //glEnable(GL_CULL_FACE);
 
     // Main loop
     while (!glfwWindowShouldClose(window)) {
@@ -241,34 +241,6 @@ int main(int, char*[]) {
         // Clear the color and depth buffers for drawing
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        float time = static_cast<float>(glfwGetTime()); // Number of seconds since the program was started
-        glUseProgram(myShader.id());                    // Activate the shader to set its variables
-        glUniform1f(locationTime, time);                // Copy the value to the shader
-        std::cout << time << "\n";
-         
-        GLint locationRx = glGetUniformLocation(myShader.id(), "Rx");
-        glUseProgram(myShader.id());
-        glUniformMatrix4fv(locationRx, 1, GL_FALSE, util::mat4rotx(M_PI/4).data());
-
-        GLint locationRy = glGetUniformLocation(myShader.id(), "Ry");
-        glUseProgram(myShader.id());
-        glUniformMatrix4fv(locationRy, 1, GL_FALSE, util::mat4roty(time).data());  // 2PI revolutions?
-
-        GLint locationRz = glGetUniformLocation(myShader.id(), "Rz");
-        glUseProgram(myShader.id());
-        glUniformMatrix4fv(locationRz, 1, GL_FALSE, util::mat4rotz(M_PI/4).data());
-
-
-        std::array<GLfloat, 16> planeT = {util::mat4mult(
-            matViev, util::mat4mult(
-                util::mat4roty(time), util::mat4mult(
-                    matTranspose, util::mat4roty(time * 3))))
-        };
-
-        GLint locationT = glGetUniformLocation(myShader.id(), "T");
-        glUseProgram(myShader.id());
-        glUniformMatrix4fv(locationT, 1, GL_FALSE, planeT.data());
-
         /* ---- Rendering code should go here ---- */
 
         glUseProgram(myShader.id());
@@ -280,25 +252,17 @@ int main(int, char*[]) {
         // "use the previously bound index buffer". (This is not obvious.)
         // The index buffer is part of the VAO state and is bound with it.
 
-        // BACK AND FRONT FACE CULLING WORKS, but is this method correct?
+        // glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);
+        
+        // --- NEW CODE 22/4 //Albert ---
 
-        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);
 
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);  // Render both sides with GL_FILL
-        glCullFace(GL_BACK);                        // Cull backside?
-        
-        
-        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);  // Render both sides with GL_LINE
-        glCullFace(GL_FRONT);                       // Cull frontside line render?
-        
 
         // Swap buffers, display the image and prepare for next frame
         glfwSwapBuffers(window);
 
         // Poll events (read keyboard and mouse input)
         glfwPollEvents();
-
 
         // Exit if the ESC key is pressed (and also if the window is closed)
         if (glfwGetKey(window, GLFW_KEY_ESCAPE)) {
