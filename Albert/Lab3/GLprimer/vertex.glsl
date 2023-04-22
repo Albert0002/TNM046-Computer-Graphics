@@ -12,6 +12,6 @@ layout(location = 1) in vec3 Color;
 out vec3 interpolatedColor;
 
 void main() {
-	gl_Position = T * vec4(Position, 1); 
+	gl_Position = vec4(Position, 1); 
 	interpolatedColor = Color; //Pass intepolated color to fragment shader
 }

@@ -37,6 +37,7 @@
 #include <vector>
 #include <array>
 #include "Shader.hpp"
+#include "TriangleSoup.hpp"
 
 
 GLuint createVertexBuffer(int location, int dimensions, const std::vector<GLfloat>& vertices) {
@@ -74,6 +75,7 @@ GLuint createIndexBuffer(const std::vector<GLuint>& indicies) {
  * main(int argc, char* argv[]) - the standard C++ entry point for the program
  */
 int main(int, char*[]) {
+    /*
     // Vertex coordinates (x,y,z) for three vertices
     const std::vector<GLfloat> vertexArrayData = {
         -1.0f, -1.0f, 0.0f, // First vertex, xyz
@@ -152,6 +154,7 @@ int main(int, char*[]) {
 
     // Translate cube (along x)
     const std::array<GLfloat, 16> matTranspose = util::mat4translate(18, 0, 0);
+    */
 
     Shader myShader;
 
@@ -190,6 +193,7 @@ int main(int, char*[]) {
         return -1;
     }
 
+    /*
     // Generate 1 Vertex array object, put the resulting identifier in vertexArrayID
     GLuint vertexArrayID = 0;
     glGenVertexArrays(1, &vertexArrayID);
@@ -205,6 +209,7 @@ int main(int, char*[]) {
 
     //Deactivate the vertex array object again to be nice
     glBindVertexArray(0);
+    */
 
     myShader.createShader("vertex.glsl", "fragment.glsl");
 
@@ -228,6 +233,10 @@ int main(int, char*[]) {
 
     //glEnable(GL_CULL_FACE);
 
+    // Generate a triangle using TringaleSoup class
+    TriangleSoup myShape;
+    myShape.createTriangle();
+
     // Main loop
     while (!glfwWindowShouldClose(window)) {
         util::displayFPS(window);
@@ -243,8 +252,11 @@ int main(int, char*[]) {
 
         /* ---- Rendering code should go here ---- */
 
+        
+        
         glUseProgram(myShader.id());
 
+        /*
         // Activate the certex array object we want to draw
         glBindVertexArray(vertexArrayID);
         // Draw our triangle with 3 vertices.
@@ -253,9 +265,10 @@ int main(int, char*[]) {
         // The index buffer is part of the VAO state and is bound with it.
 
         // glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);
-        
-        // --- NEW CODE 22/4 //Albert ---
+        */
 
+        // --- NEW CODE 22/4 //Albert ---
+        myShape.render();
 
 
         // Swap buffers, display the image and prepare for next frame
@@ -270,12 +283,14 @@ int main(int, char*[]) {
         }
     }
 
+    /*
     // release the vertex and index buffers as well as the vertex array
     glDeleteVertexArrays(1, &vertexArrayID);
     glDeleteBuffers(1, &vertexBufferID);
     glDeleteBuffers(1, &indexBufferID);
     //release the color buffers
     glDeleteBuffers(1, &colorBufferID);
+    */
 
     // Close the OpenGL window and terminate GLFW
     glfwDestroyWindow(window);
