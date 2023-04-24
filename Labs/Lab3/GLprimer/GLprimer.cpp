@@ -117,61 +117,45 @@ int main(int, char*[]) {
     };
 
     const std::vector<GLuint> cubeIndexArrayData = {
-        0, 1, 3,  // t0
-        1, 2, 3,  // t1
-        4, 0, 7,  // t2
-        0, 3, 7,  // t3
-        5, 4, 6,  // t4
-        4, 7, 6,  // t5
-        1, 5, 2,  // t6
-        5, 6, 2,  // t7
-        3, 2, 7,  // t8
-        2, 6, 7,  // t9
-        1, 0, 5,  // t10
-        0, 4, 5   // t11
+        0, 3, 9,  // t0
+        3, 6, 9,  // t1
+        14, 2, 23,  // t2
+        2, 11, 23,  // t3
+        15, 12, 18,  // t4
+        12, 21, 18,  // t5
+        5, 17, 8,  // t6
+        17, 20, 8,  // t7
+        10, 7, 22,  // t8
+        7, 19, 22,  // t9
+        4, 1, 16,  // t10
+        1, 13, 16   // t11
     };
 
     const std::vector<GLfloat> cubeColorArrayData = {
-        1.0f, 0.0f, 0.0f,  // Red
-        1.0f, 0.0f, 0.0f,  // Red
-        1.0f, 0.0f, 0.0f,  // Red
-        0.0f, 1.0f, 0.0f,  // Green
-        0.0f, 1.0f, 0.0f,  // Green
-        0.0f, 1.0f, 0.0f,  // Green
-        0.0f, 0.0f, 1.0f,  // Blue
-        0.0f, 0.0f, 1.0f,  // Blue
-        0.0f, 0.0f, 1.0f,  // Blue
-
-        1.0f, 0.5f, 0.0f,  // Orange
-        1.0f, 0.5f, 0.0f,  // Orange
-        1.0f, 0.5f, 0.0f,  // Orange
-        0.0f, 1.0f, 0.0f,  // Green
-        0.0f, 1.0f, 0.0f,  // Green
-        0.0f, 1.0f, 0.0f,  // Green
-        0.5f, 0.0f, 1.0f,  // Purple
-        0.5f, 0.0f, 1.0f,  // Purple
-        0.5f, 0.0f, 1.0f,  // Purple
-
-        0.5f, 0.5f, 0.5f,  // Brown?
-        0.5f, 0.5f, 0.5f,  // Brown?
-        0.5f, 0.5f, 0.5f,  // Brown?
-        1.0f, 1.0f, 1.0f,  // White
-        1.0f, 1.0f, 1.0f,  // White
-        1.0f, 1.0f, 1.0f,  // White
-        0.0f, 0.0f, 0.0f,  // Black
-        0.0f, 0.0f, 0.0f,  // Black
-        0.0f, 0.0f, 0.0f,  // Black
-
-        1.0f, 1.0f, 0.0f,  // ?
-        1.0f, 1.0f, 0.0f,  // ?
-        1.0f, 1.0f, 0.0f,  // ?
-        0.0f, 1.0f, 1.0f,  // ?
-        0.0f, 1.0f, 1.0f,  // ?
-        0.0f, 1.0f, 1.0f,  // ?
-        1.0f, 0.0f, 1.0f,  // ?
-        1.0f, 0.0f, 1.0f,  // ?
-        1.0f, 0.0f, 1.0f,  // ?
-
+        0.0f, 1.0f, 0.0f,  // Green 0
+        0.5f, 0.0f, 1.0f,  // Purple 1
+        1.0f, 0.0f, 0.0f,  // Red 2
+        0.0f, 1.0f, 0.0f,  // Green 3
+        0.5f, 0.0f, 1.0f,  // Purple 4
+        1.0f, 0.5f, 0.0f,  // Orange 5
+        0.0f, 1.0f, 0.0f,  // Green 6
+        0.0f, 1.0f, 0.0f,  // Yellow 7
+        1.0f, 0.5f, 0.0f,  // Orange 8
+        0.0f, 1.0f, 0.0f,  // Green 9
+        0.0f, 1.0f, 0.0f,  // Yellow 10
+        1.0f, 0.0f, 0.0f,  // Red 11
+        0.0f, 0.0f, 1.0f,  // Blue 12
+        0.5f, 0.0f, 1.0f,  // Purple 13
+        1.0f, 0.0f, 0.0f,  // Red 14
+        0.0f, 0.0f, 1.0f,  // Blue 15
+        0.5f, 0.0f, 1.0f,  // Purple 16
+        1.0f, 0.5f, 0.0f,  // Orange 17
+        0.0f, 0.0f, 1.0f,  // Blue 18
+        0.0f, 1.0f, 0.0f,  // Yellow 19
+        1.0f, 0.5f, 0.0f,  // Orange 20
+        0.0f, 0.0f, 1.0f,  // Blue 21
+        0.0f, 1.0f, 0.0f,  // Yellow 22
+        1.0f, 0.0f, 0.0f,  // Red 23
     };
 
     std::array<GLfloat, 16> matT = {
