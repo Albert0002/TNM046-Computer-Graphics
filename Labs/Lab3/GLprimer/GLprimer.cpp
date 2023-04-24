@@ -133,20 +133,45 @@ int main(int, char*[]) {
 
     const std::vector<GLfloat> cubeColorArrayData = {
         1.0f, 0.0f, 0.0f,  // Red
+        1.0f, 0.0f, 0.0f,  // Red
+        1.0f, 0.0f, 0.0f,  // Red
         0.0f, 1.0f, 0.0f,  // Green
+        0.0f, 1.0f, 0.0f,  // Green
+        0.0f, 1.0f, 0.0f,  // Green
+        0.0f, 0.0f, 1.0f,  // Blue
+        0.0f, 0.0f, 1.0f,  // Blue
         0.0f, 0.0f, 1.0f,  // Blue
 
         1.0f, 0.5f, 0.0f,  // Orange
+        1.0f, 0.5f, 0.0f,  // Orange
+        1.0f, 0.5f, 0.0f,  // Orange
         0.0f, 1.0f, 0.0f,  // Green
+        0.0f, 1.0f, 0.0f,  // Green
+        0.0f, 1.0f, 0.0f,  // Green
+        0.5f, 0.0f, 1.0f,  // Purple
+        0.5f, 0.0f, 1.0f,  // Purple
         0.5f, 0.0f, 1.0f,  // Purple
 
         0.5f, 0.5f, 0.5f,  // Brown?
+        0.5f, 0.5f, 0.5f,  // Brown?
+        0.5f, 0.5f, 0.5f,  // Brown?
         1.0f, 1.0f, 1.0f,  // White
+        1.0f, 1.0f, 1.0f,  // White
+        1.0f, 1.0f, 1.0f,  // White
+        0.0f, 0.0f, 0.0f,  // Black
+        0.0f, 0.0f, 0.0f,  // Black
         0.0f, 0.0f, 0.0f,  // Black
 
         1.0f, 1.0f, 0.0f,  // ?
+        1.0f, 1.0f, 0.0f,  // ?
+        1.0f, 1.0f, 0.0f,  // ?
+        0.0f, 1.0f, 1.0f,  // ?
+        0.0f, 1.0f, 1.0f,  // ?
         0.0f, 1.0f, 1.0f,  // ?
         1.0f, 0.0f, 1.0f,  // ?
+        1.0f, 0.0f, 1.0f,  // ?
+        1.0f, 0.0f, 1.0f,  // ?
+
     };
 
     std::array<GLfloat, 16> matT = {
