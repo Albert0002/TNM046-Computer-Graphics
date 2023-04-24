@@ -37,6 +37,7 @@
 #include <vector>
 #include <array>
 #include "Shader.hpp"
+#include "TriangleSoup.hpp"
 
 
 GLuint createVertexBuffer(int location, int dimensions, const std::vector<GLfloat>& vertices) {
@@ -139,10 +140,10 @@ int main(int, char*[]) {
         0.5f, 0.0f, 1.0f,  // Purple 4
         1.0f, 0.5f, 0.0f,  // Orange 5
         0.0f, 1.0f, 0.0f,  // Green 6
-        0.0f, 1.0f, 0.0f,  // Yellow 7
+        1.0f, 1.0f, 0.0f,  // Yellow 7
         1.0f, 0.5f, 0.0f,  // Orange 8
         0.0f, 1.0f, 0.0f,  // Green 9
-        0.0f, 1.0f, 0.0f,  // Yellow 10
+        1.0f, 1.0f, 0.0f,  // Yellow 10
         1.0f, 0.0f, 0.0f,  // Red 11
         0.0f, 0.0f, 1.0f,  // Blue 12
         0.5f, 0.0f, 1.0f,  // Purple 13
@@ -151,10 +152,10 @@ int main(int, char*[]) {
         0.5f, 0.0f, 1.0f,  // Purple 16
         1.0f, 0.5f, 0.0f,  // Orange 17
         0.0f, 0.0f, 1.0f,  // Blue 18
-        0.0f, 1.0f, 0.0f,  // Yellow 19
+        1.0f, 1.0f, 0.0f,  // Yellow 19
         1.0f, 0.5f, 0.0f,  // Orange 20
         0.0f, 0.0f, 1.0f,  // Blue 21
-        0.0f, 1.0f, 0.0f,  // Yellow 22
+        1.0f, 1.0f, 0.0f,  // Yellow 22
         1.0f, 0.0f, 0.0f,  // Red 23
     };
 
@@ -215,6 +216,9 @@ int main(int, char*[]) {
         return -1;
     }
 
+    /*
+    *  OLD V.A.O
+    * 
     // Generate 1 Vertex array object, put the resulting identifier in vertexArrayID
     GLuint vertexArrayID = 0;
     glGenVertexArrays(1, &vertexArrayID);
@@ -230,6 +234,12 @@ int main(int, char*[]) {
 
     //Deactivate the vertex array object again to be nice
     glBindVertexArray(0);
+    */
+
+    TriangleSoup myShape;
+    myShape.createTriangle();
+
+    myShape.createSphere(0.5, 1500);
 
     myShader.createShader("vertex.glsl", "fragment.glsl");
 
@@ -273,7 +283,7 @@ int main(int, char*[]) {
          
         GLint locationRx = glGetUniformLocation(myShader.id(), "Rx");
         glUseProgram(myShader.id());
-        glUniformMatrix4fv(locationRx, 1, GL_FALSE, util::mat4rotx(M_PI/4).data());
+        glUniformMatrix4fv(locationRx, 1, GL_FALSE, util::mat4rotx(M_PI/8).data());
 
         GLint locationRy = glGetUniformLocation(myShader.id(), "Ry");
         glUseProgram(myShader.id());
@@ -298,6 +308,12 @@ int main(int, char*[]) {
 
         glUseProgram(myShader.id());
 
+        myShape.render();
+        //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+        /*
+        *   OLD V.A.O
+        * 
         // Activate the certex array object we want to draw
         glBindVertexArray(vertexArrayID);
         // Draw our triangle with 3 vertices.
@@ -316,7 +332,7 @@ int main(int, char*[]) {
         glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);  // Render both sides with GL_LINE
         glCullFace(GL_FRONT);                       // Cull frontside line render?
-        
+        */
 
         // Swap buffers, display the image and prepare for next frame
         glfwSwapBuffers(window);
@@ -331,12 +347,18 @@ int main(int, char*[]) {
         }
     }
 
+    /*
+    *   OLD V.A.O
+    *
     // release the vertex and index buffers as well as the vertex array
     glDeleteVertexArrays(1, &vertexArrayID);
     glDeleteBuffers(1, &vertexBufferID);
     glDeleteBuffers(1, &indexBufferID);
     //release the color buffers
     glDeleteBuffers(1, &colorBufferID);
+    */
+    
+    //myShape.~TriangleSoup();
 
     // Close the OpenGL window and terminate GLFW
     glfwDestroyWindow(window);
