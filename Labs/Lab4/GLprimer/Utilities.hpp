@@ -29,6 +29,7 @@ namespace util {
 
 	std::array<float, 16> mat4mult(const std::array<float, 16>& m1,
 		const std::array<float, 16>& m2);
+    std::array<float, 9> mat4toMat3(const std::array<float, 16>& mat4);
 
 	std::array<float, 16> mat4identity();			// Returns the 4D identity matrix
 	std::array<float, 16> mat4rotx(float angle);	// Rotation matrix around x-axis. Radians. 
@@ -36,5 +37,10 @@ namespace util {
 	std::array<float, 16> mat4rotz(float angle);	// Rotation matrix around z-axis. Radians. 
 	std::array<float, 16> mat4scale(float scale);	// Uniform scaling matrix
     std::array<float, 16> mat4translate(float x, float y, float z); // Translation matrix
+    
+	std::array<float, 16> MV();						// Model view matrix
+    std::array<float, 16> mat4perspective(float vfov, float aspect, float znear,
+                                          float zfar);  // Perspective projection matrix
 
-}  // namespace util
+
+    }  // namespace util

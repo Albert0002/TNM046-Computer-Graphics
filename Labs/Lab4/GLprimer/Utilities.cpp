@@ -66,6 +66,13 @@ namespace util {
         return results;
     }
 
+    std::array<float, 9> mat4toMat3(const std::array<float, 16>& mat4) {
+        return { mat4[0], mat4[1], mat4[2],
+                 mat4[5], mat4[6], mat4[7],
+                 mat4[9], mat4[10], mat4[11]
+        };
+    }
+
     std::array<float, 16> mat4identity() {
         return {
             1.0f, 0.0f, 0.0f, 0.0f,
@@ -117,6 +124,24 @@ namespace util {
             0.0f, 1.0f, 0.0f, 0.0f,
             0.0f, 0.0f, 1.0f, 0.0f,
             x,    y,    z,    1.0f
+        };
+    }
+
+    std::array<float, 16> MV() {
+        return {
+            1.0f, 0.0f, 0.0f, 0.0f,
+            0.0f, 1.0f, 0.0f, 0.0f,
+            0.0f, 0.0f, 1.0f, 0.0f,
+            0.0f, 0.0f, 0.0f, 1.0f
+        };
+    }
+
+    std::array<float, 16> mat4perspective(float vfov, float aspect, float znear, float zfar) {
+        return {
+            1.0f, 0.0f, 0.0f, 0.0f,
+            0.0f, 1.0f, 0.0f, 0.0f,
+            0.0f, 0.0f, 1.0f, 0.0f,
+            0.0f, 0.0f, 0.0f, 1.0f
         };
     }
 

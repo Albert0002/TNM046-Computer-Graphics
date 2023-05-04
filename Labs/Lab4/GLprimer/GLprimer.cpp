@@ -280,7 +280,21 @@ int main(int, char*[]) {
         glUseProgram(myShader.id());                    // Activate the shader to set its variables
         glUniform1f(locationTime, time);                // Copy the value to the shader
         std::cout << time << "\n";
-         
+
+        GLint MV = glGetUniformLocation(myShader.id(), "MV");
+        glUseProgram(myShader.id());
+        glUniformMatrix4fv(MV, 1, GL_FALSE, util::MV().data());
+
+        // "INVERSE TRANSPOSE?"
+        GLint MV_normal = glGetUniformLocation(myShader.id(), "MV_normal");
+        glUseProgram(myShader.id());
+        glUniformMatrix4fv(MV, 1, GL_FALSE, util::mat4toMat3(util::MV()).data());
+
+        GLint P = glGetUniformLocation(myShader.id(), "P");
+        glUseProgram(myShader.id());
+        glUniformMatrix4fv(P, 1, GL_FALSE, util::mat4identity().data());
+
+        /*
         GLint locationRx = glGetUniformLocation(myShader.id(), "Rx");
         glUseProgram(myShader.id());
         glUniformMatrix4fv(locationRx, 1, GL_FALSE, util::mat4rotx(M_PI/8).data());
@@ -300,9 +314,11 @@ int main(int, char*[]) {
                     matTranspose, util::mat4roty(time * 3))))
         };
 
+        
         GLint locationT = glGetUniformLocation(myShader.id(), "T");
         glUseProgram(myShader.id());
         glUniformMatrix4fv(locationT, 1, GL_FALSE, planeT.data());
+        */
 
         /* ---- Rendering code should go here ---- */
 
