@@ -10,6 +10,7 @@ uniform mat4 Rz;
 */
 
 uniform mat4 MV;
+uniform mat3 MV_normal;
 uniform mat4 P;
 
 layout(location = 0) in vec3 Position;
@@ -26,7 +27,7 @@ void main() {
 
 	//vec3 MV_norm = vec3(MV);
 
-	vec3 transformedNormal = Normal; //mat3(Ry * Rx) * Normal;
+	vec3 transformedNormal = MV_normal * Normal; //mat3(Ry * Rx) * Normal;
 	interpolatedNormal = normalize(transformedNormal);
 	st = TexCoord; // Will also be interpolated across the triangle
 }
