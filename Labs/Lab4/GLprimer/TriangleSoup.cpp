@@ -130,19 +130,55 @@ void TriangleSoup::createBox(float xsize, float ysize, float zsize) {
     // The data array contains 8 floats per vertex:
     // coordinate xyz, normal xyz, texcoords st
     const GLfloat vertex_array_data[] = {
-        -xsize, -ysize, -zsize, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,  // Vertex 0
-        xsize,  -ysize, -zsize, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,  // Vertex 1
-        -xsize, ysize,  -zsize, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,  // Vertex 2
-        xsize,  ysize,  -zsize, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,  // Vertex 3
-        -xsize, -ysize, zsize,  0.0f, 0.0f, 1.0f, 0.0f, 0.0f,  // Vertex 0
-        xsize,  -ysize, zsize,  0.0f, 0.0f, 1.0f, 0.0f, 0.0f,  // Vertex 1
-        -xsize, ysize,  zsize,  0.0f, 0.0f, 1.0f, 0.0f, 0.0f,  // Vertex 2
-        xsize,  ysize,  zsize,  0.0f, 0.0f, 1.0f, 0.0f, 0.0f   // Vertex 3
+        // P0
+        -xsize, -ysize, -zsize, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f,  // Vertex 0
+        -xsize, -ysize, -zsize, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f,  // Vertex 1
+        -xsize, -ysize, -zsize, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f,  // Vertex 2
+        // P1
+        -xsize, -ysize, zsize, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f,  // Vertex 3
+        -xsize, -ysize, zsize, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f,  // Vertex 4
+        -xsize, -ysize, zsize, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,   // Vertex 5
+        // P2
+        -xsize, ysize, zsize, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f,  // Vertex 6
+        -xsize, ysize, zsize, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f,   // Vertex 7
+        -xsize, ysize, zsize, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,   // Vertex 8
+        // P3
+        -xsize, ysize, -zsize, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f,  // Vertex 9
+        -xsize, ysize, -zsize, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f,   // Vertex 10
+        -xsize, ysize, -zsize, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f,  // Vertex 11
+        // P4
+        xsize, -ysize, -zsize, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,   // Vertex 12
+        xsize, -ysize, -zsize, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f,  // Vertex 13
+        xsize, -ysize, -zsize, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f,  // Vertex 14
+        // P5
+        xsize, -ysize, zsize, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,   // Vertex 15
+        xsize, -ysize, zsize, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f,  // Vertex 16
+        xsize, -ysize, zsize, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,   // Vertex 17
+        // P6
+        xsize, ysize, zsize, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,  // Vertex 18
+        xsize, ysize, zsize, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f,  // Vertex 19
+        xsize, ysize, zsize, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,  // Vertex 20
+        // P7
+        xsize, ysize, -zsize, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,   // Vertex 21
+        xsize, ysize, -zsize, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f,   // Vertex 22
+        xsize, ysize, -zsize, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f,  // Vertex 23
     };
-    const GLuint index_array_data[] = {0, 3, 1, 0, 2, 3, 1, 4, 0, 1, 5, 4, 4, 2, 0, 4, 6, 2,
-                                       1, 3, 7, 1, 7, 5, 7, 2, 6, 7, 3, 2, 4, 5, 7, 4, 7, 6};
+    const GLuint index_array_data[] = {
+        0,  3,  9,   // t0
+        3,  6,  9,   // t1
+        14, 2,  23,  // t2
+        2,  11, 23,  // t3
+        15, 12, 18,  // t4
+        12, 21, 18,  // t5
+        5,  17, 8,   // t6
+        17, 20, 8,   // t7
+        10, 7,  22,  // t8
+        7,  19, 22,  // t9
+        4,  1,  16,  // t10
+        1,  13, 16   // t11
+    };
 
-    nverts_ = 8;
+    nverts_ = 24;
     ntris_ = 12;
 
     vertexarray_.resize(8 * nverts_);

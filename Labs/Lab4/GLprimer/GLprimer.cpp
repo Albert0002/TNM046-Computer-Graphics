@@ -237,9 +237,11 @@ int main(int, char*[]) {
     */
 
     TriangleSoup myShape;
-    myShape.createTriangle();
+    //myShape.createTriangle();
 
-    myShape.createSphere(0.5, 600);
+    //myShape.createSphere(0.5, 600);
+
+    myShape.createBox(0.2, 0.2, 0.5);
 
     myShader.createShader("vertex.glsl", "fragment.glsl");
 
@@ -261,7 +263,7 @@ int main(int, char*[]) {
 
     glfwSwapInterval(0);  // Do not wait for screen refresh between frames
 
-    glEnable(GL_CULL_FACE);
+    //glEnable(GL_CULL_FACE);
 
     // Main loop
     while (!glfwWindowShouldClose(window)) {
@@ -281,27 +283,36 @@ int main(int, char*[]) {
         glUniform1f(locationTime, time);                // Copy the value to the shader
         std::cout << time << "\n";
 
+        std::array<float, 16> modelView =
+            util::mat4mult(
+                util::mat4rotx(M_PI/8),
+                util::mat4mult(
+                    util::mat4translate(0.0f, 0.0f, -3.0f),
+                    util::mat4roty(time)
+                )
+            );
+
         GLint MV = glGetUniformLocation(myShader.id(), "MV");
         glUseProgram(myShader.id());
-        glUniformMatrix4fv(MV, 1, GL_FALSE, util::MV().data());
+        glUniformMatrix4fv(MV, 1, GL_FALSE, modelView.data());
 
         // "INVERSE TRANSPOSE?"
         GLint MV_normal = glGetUniformLocation(myShader.id(), "MV_normal");
         glUseProgram(myShader.id());
-        glUniformMatrix4fv(MV, 1, GL_FALSE, util::mat4toMat3(util::MV()).data());
+        glUniformMatrix4fv(MV_normal, 1, GL_FALSE, util::mat4toMat3(modelView).data());
 
         GLint P = glGetUniformLocation(myShader.id(), "P");
         glUseProgram(myShader.id());
-        glUniformMatrix4fv(P, 1, GL_FALSE, util::mat4identity().data());
+        glUniformMatrix4fv(P, 1, GL_FALSE, util::mat4perspective_T(M_PI/4, 1.0f, 0.1f, 100.0f).data());
 
         /*
-        GLint locationRx = glGetUniformLocation(myShader.id(), "Rx");
-        glUseProgram(myShader.id());
-        glUniformMatrix4fv(locationRx, 1, GL_FALSE, util::mat4rotx(M_PI/8).data());
-
         GLint locationRy = glGetUniformLocation(myShader.id(), "Ry");
         glUseProgram(myShader.id());
         glUniformMatrix4fv(locationRy, 1, GL_FALSE, util::mat4roty(time).data());  // 2PI revolutions?
+        
+        GLint locationRx = glGetUniformLocation(myShader.id(), "Rx");
+        glUseProgram(myShader.id());
+        glUniformMatrix4fv(locationRx, 1, GL_FALSE, util::mat4rotx(M_PI/8).data());
 
         GLint locationRz = glGetUniformLocation(myShader.id(), "Rz");
         glUseProgram(myShader.id());

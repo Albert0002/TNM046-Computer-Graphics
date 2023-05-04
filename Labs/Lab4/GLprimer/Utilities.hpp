@@ -41,6 +41,7 @@ namespace util {
 	std::array<float, 16> MV();						// Model view matrix
     std::array<float, 16> mat4perspective(float vfov, float aspect, float znear,
                                           float zfar);  // Perspective projection matrix
-
+    std::array<float, 16> mat4perspective_T(float vfov, float aspect, float znear,
+                                          float zfar);  // Perspective projection matrix
 
     }  // namespace util
