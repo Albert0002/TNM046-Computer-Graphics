@@ -241,7 +241,7 @@ int main(int, char*[]) {
 
     //myShape.createSphere(0.5, 600);
 
-    myShape.createBox(0.2, 0.2, 3.0);
+    myShape.createBox(0.2, 0.2, 0.5);
 
     myShader.createShader("vertex.glsl", "fragment.glsl");
 
@@ -264,7 +264,7 @@ int main(int, char*[]) {
     glfwSwapInterval(0);  // Do not wait for screen refresh between frames
 
     //glEnable(GL_CULL_FACE);
-    glEnable(GL_DEPTH_TEST);
+    //glEnable(GL_DEPTH_TEST);
 
     // Main loop
     while (!glfwWindowShouldClose(window)) {
@@ -284,14 +284,14 @@ int main(int, char*[]) {
         glUniform1f(locationTime, time);                // Copy the value to the shader
         std::cout << time << "\n";
 
-        std::array<float, 16> modelView =
-            util::mat4mult(
-                util::mat4rotx(M_PI/16),
-                util::mat4mult(
-                    util::mat4translate(0.0f, 0.0f, -10.0f),
-                    util::mat4roty(time)
-                )
-            );
+        std::array<float, 16> viewT = util::mat4translate(0.0f, 0.0f, -3.0f);
+
+        std::array<float, 16> viewRx = util::mat4rotx(M_PI/8);
+
+        std::array<float, 16> viewRy = util::mat4roty(time);
+
+        
+        std::array<float, 16> modelView = util::mat4mult(viewT, util::mat4mult(viewRx, viewRy));
 
         GLint MV = glGetUniformLocation(myShader.id(), "MV");
         glUseProgram(myShader.id());
@@ -337,7 +337,7 @@ int main(int, char*[]) {
         glUseProgram(myShader.id());
         
         myShape.render();
-        //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
         /*
         *   OLD V.A.O
