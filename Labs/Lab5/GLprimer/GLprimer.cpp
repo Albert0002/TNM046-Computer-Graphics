@@ -264,6 +264,7 @@ int main(int, char*[]) {
     glfwSwapInterval(0);  // Do not wait for screen refresh between frames
 
     //glEnable(GL_CULL_FACE);
+    //glEnable(GL_DEPTH_TEST);
 
     // Main loop
     while (!glfwWindowShouldClose(window)) {
@@ -283,14 +284,14 @@ int main(int, char*[]) {
         glUniform1f(locationTime, time);                // Copy the value to the shader
         std::cout << time << "\n";
 
-        std::array<float, 16> modelView =
-            util::mat4mult(
-                util::mat4rotx(M_PI/8),
-                util::mat4mult(
-                    util::mat4translate(0.0f, 0.0f, -3.0f),
-                    util::mat4roty(time)
-                )
-            );
+        std::array<float, 16> viewT = util::mat4translate(0.0f, 0.0f, -3.0f);
+
+        std::array<float, 16> viewRx = util::mat4rotx(M_PI/8);
+
+        std::array<float, 16> modelRy = util::mat4roty(time);
+
+        
+        std::array<float, 16> modelView = util::mat4mult(viewT, util::mat4mult(viewRx, modelRy));
 
         GLint MV = glGetUniformLocation(myShader.id(), "MV");
         glUseProgram(myShader.id());
@@ -305,10 +306,10 @@ int main(int, char*[]) {
         glUseProgram(myShader.id());
         glUniformMatrix4fv(P, 1, GL_FALSE, util::mat4perspective_T(M_PI/4, 1.0f, 0.1f, 100.0f).data());
 
-        /*
         GLint locationRy = glGetUniformLocation(myShader.id(), "Ry");
         glUseProgram(myShader.id());
         glUniformMatrix4fv(locationRy, 1, GL_FALSE, util::mat4roty(time).data());  // 2PI revolutions?
+        /*
         
         GLint locationRx = glGetUniformLocation(myShader.id(), "Rx");
         glUseProgram(myShader.id());
@@ -316,7 +317,7 @@ int main(int, char*[]) {
 
         GLint locationRz = glGetUniformLocation(myShader.id(), "Rz");
         glUseProgram(myShader.id());
-        glUniformMatrix4fv(locationRz, 1, GL_FALSE, util::mat4rotz(M_PI/4).data());
+        glUniformMatrix4fv(locationRz, 1, GL_FALSE, util::mat4rotz(time).data());
 
 
         std::array<GLfloat, 16> planeT = {util::mat4mult(
@@ -334,9 +335,9 @@ int main(int, char*[]) {
         /* ---- Rendering code should go here ---- */
 
         glUseProgram(myShader.id());
-
+        
         myShape.render();
-        //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
         /*
         *   OLD V.A.O
