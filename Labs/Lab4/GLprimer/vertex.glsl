@@ -3,11 +3,11 @@
 uniform float time;
 
 /*
-uniform mat4 Ry;
 uniform mat4 Rx;
-uniform mat4 T;
 uniform mat4 Rz;
+uniform mat4 T;
 */
+uniform mat4 Ry;
 
 uniform mat4 MV;
 uniform mat3 MV_normal;
@@ -29,6 +29,7 @@ void main() {
 
 	// ??????
 	vec3 transformedNormal = transpose(inverse(mat3(P * MV))) * Normal; //mat3(Ry * Rx) * Normal;
+	//vec3 transformedNormal = mat3(P * MV * Ry) * Normal; //mat3(Ry * Rx) * Normal;
 	interpolatedNormal = normalize(transformedNormal);
 	st = TexCoord; // Will also be interpolated across the triangle
 }

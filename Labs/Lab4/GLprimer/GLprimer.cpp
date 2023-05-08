@@ -241,7 +241,7 @@ int main(int, char*[]) {
 
     //myShape.createSphere(0.5, 600);
 
-    myShape.createBox(0.2, 0.2, 0.5);
+    myShape.createBox(0.2, 0.2, 3.0);
 
     myShader.createShader("vertex.glsl", "fragment.glsl");
 
@@ -264,6 +264,7 @@ int main(int, char*[]) {
     glfwSwapInterval(0);  // Do not wait for screen refresh between frames
 
     //glEnable(GL_CULL_FACE);
+    glEnable(GL_DEPTH_TEST);
 
     // Main loop
     while (!glfwWindowShouldClose(window)) {
@@ -285,9 +286,9 @@ int main(int, char*[]) {
 
         std::array<float, 16> modelView =
             util::mat4mult(
-                util::mat4rotx(M_PI/8),
+                util::mat4rotx(M_PI/16),
                 util::mat4mult(
-                    util::mat4translate(0.0f, 0.0f, -3.0f),
+                    util::mat4translate(0.0f, 0.0f, -10.0f),
                     util::mat4roty(time)
                 )
             );
@@ -305,10 +306,10 @@ int main(int, char*[]) {
         glUseProgram(myShader.id());
         glUniformMatrix4fv(P, 1, GL_FALSE, util::mat4perspective_T(M_PI/4, 1.0f, 0.1f, 100.0f).data());
 
-        /*
         GLint locationRy = glGetUniformLocation(myShader.id(), "Ry");
         glUseProgram(myShader.id());
         glUniformMatrix4fv(locationRy, 1, GL_FALSE, util::mat4roty(time).data());  // 2PI revolutions?
+        /*
         
         GLint locationRx = glGetUniformLocation(myShader.id(), "Rx");
         glUseProgram(myShader.id());
@@ -316,7 +317,7 @@ int main(int, char*[]) {
 
         GLint locationRz = glGetUniformLocation(myShader.id(), "Rz");
         glUseProgram(myShader.id());
-        glUniformMatrix4fv(locationRz, 1, GL_FALSE, util::mat4rotz(M_PI/4).data());
+        glUniformMatrix4fv(locationRz, 1, GL_FALSE, util::mat4rotz(time).data());
 
 
         std::array<GLfloat, 16> planeT = {util::mat4mult(
@@ -334,7 +335,7 @@ int main(int, char*[]) {
         /* ---- Rendering code should go here ---- */
 
         glUseProgram(myShader.id());
-
+        
         myShape.render();
         //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
