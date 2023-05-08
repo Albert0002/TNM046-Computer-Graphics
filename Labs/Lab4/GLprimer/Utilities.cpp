@@ -138,10 +138,10 @@ namespace util {
 
     std::array<float, 16> mat4perspective(float vfov, float aspect, float znear, float zfar) {
         return {
-            (cosf(vfov/2)/sinf(vfov/2))/aspect, 0.0f, 0.0f, 0.0f,
+            (cosf(vfov/2)/sinf(vfov/2))/aspect,0.0f,0.0f,0.0f,
             0.0f, (cosf(vfov/2)/sinf(vfov/2)),  0.0f, 0.0f,
-            0.0f, 0.0f, -((zfar + znear)/(zfar - znear)), -((2*znear*zfar)/(zfar - znear)),
-            0.0f, 0.0f, -1.0f, 0.0f
+            0.0f, 0.0f, -((zfar + znear)/(zfar - znear)), -1.0f,
+            0.0f, 0.0f, -((2*znear*zfar)/(zfar - znear)), 0.0f
         };
     }
 

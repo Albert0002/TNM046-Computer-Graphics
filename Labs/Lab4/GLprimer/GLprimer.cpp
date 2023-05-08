@@ -288,10 +288,10 @@ int main(int, char*[]) {
 
         std::array<float, 16> viewRx = util::mat4rotx(M_PI/8);
 
-        std::array<float, 16> viewRy = util::mat4roty(time);
+        std::array<float, 16> modelRy = util::mat4roty(time);
 
         
-        std::array<float, 16> modelView = util::mat4mult(viewT, util::mat4mult(viewRx, viewRy));
+        std::array<float, 16> modelView = util::mat4mult(viewT, util::mat4mult(viewRx, modelRy));
 
         GLint MV = glGetUniformLocation(myShader.id(), "MV");
         glUseProgram(myShader.id());

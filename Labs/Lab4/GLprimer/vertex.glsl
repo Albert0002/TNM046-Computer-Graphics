@@ -28,7 +28,7 @@ void main() {
 	//vec3 MV_norm = vec3(MV);
 
 	// ??????
-	vec3 transformedNormal = transpose(inverse(mat3(P * MV))) * Normal; //mat3(Ry * Rx) * Normal;
+	vec3 transformedNormal = mat3(MV) * Normal; //mat3(Ry * Rx) * Normal;
 	//vec3 transformedNormal = mat3(P * MV) * Normal; //mat3(Ry * Rx) * Normal;
 	interpolatedNormal = normalize(transformedNormal);
 	st = TexCoord; // Will also be interpolated across the triangle
