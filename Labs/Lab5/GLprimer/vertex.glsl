@@ -22,7 +22,7 @@ out vec2 st;
 out vec3 lightDirection;
 
 void main() {
-	lightDirection = vec3(0.0, 0.0, 1.0);
+	lightDirection = vec3(1.0, 0.0, 1.0);
 	gl_Position = P * MV * vec4(Position, 1); // Special, required output
 
 	//vec3 MV_norm = vec3(MV);
