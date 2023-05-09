@@ -1,6 +1,7 @@
 #version 330 core
 
 uniform float time;
+uniform sampler2D tex;
 
 in vec3 interpolatedNormal;
 in vec2 st;
@@ -17,7 +18,9 @@ vec3 ks = vec3(0.6, 0.6, 0.6);
 float n = 20;
 
 void main() {
-	finalcolor = vec4(1.0, 1.0, 1.0, 1.0);
+	finalcolor = texture(tex, st);
+	
+	//finalcolor = vec4(1.0, 1.0, 1.0, 1.0);
 	//finalcolor = vec4(interpolatedNormal * 0.5 + 0.5, 1.0);
 	
 	
