@@ -243,7 +243,7 @@ int main(int, char*[]) {
 
     //myShape.createTriangle();
 
-    myShape.createSphere(0.5, 600);
+    //myShape2.createSphere(0.5, 600);
 
     //myShape.createBox(0.5, 0.5, 0.5);
 
@@ -277,6 +277,7 @@ int main(int, char*[]) {
     myTexture.createTexture("textures/earth.tga");
 
     KeyRotator myKeyRotator(window);
+
     MouseRotator myMouseRotator(window);
 
     glEnable(GL_CULL_FACE);
@@ -295,50 +296,58 @@ int main(int, char*[]) {
         // Clear the color and depth buffers for drawing
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        float time = static_cast<float>(glfwGetTime()); // Number of seconds since the program was started
-        glUniform1f(locationTime, time);                // Copy the value to the shader
-        //std::cout << time << "\n";
-        glUseProgram(myShader.id());                    // Activate the shader to set its variables
+        float time =
+            static_cast<float>(glfwGetTime());  // Number of seconds since the program was started
+        glUniform1f(locationTime, time);        // Copy the value to the shader
+        // std::cout << time << "\n";
+        glUseProgram(myShader.id());  // Activate the shader to set its variables
 
         std::array<float, 16> viewT = util::mat4translate(0.0f, 0.0f, -3.0f);
 
-        std::array<float, 16> viewRx = util::mat4rotx(M_PI/8);
+        std::array<float, 16> viewRx = util::mat4rotx(M_PI / 8);
 
-        std::array<float, 16> modelRx = util::mat4rotx(-M_PI/2);
+        std::array<float, 16> modelRx = util::mat4rotx(-M_PI / 2);
 
-        std::array<float, 16> modelRy = util::mat4roty(57*time);
+        std::array<float, 16> modelRy = util::mat4roty(0);  //
 
-        std::array<float, 16> modelOrbit = util::mat4roty(-time);
+        std::array<float, 16> modelOrbit = util::mat4roty(M_PI);  // ?
 
-        std::array<float, 16> modelT = util::mat4translate(0.0f, 0.0f, 3.0f);
-        
-        std::array<float, 16> modelView = util::mat4mult(viewT, util::mat4mult(viewRx,util::mat4mult(modelOrbit ,util::mat4mult(modelT ,util::mat4mult(modelRy,modelRx)))));
+        std::array<float, 16> modelT = util::mat4translate(0.0f, 0.0f, 0.0f);
+
+        std::array<float, 16> modelView = util::mat4mult(
+            viewT,
+            util::mat4mult(
+                viewRx, util::mat4mult(modelOrbit,
+                                       util::mat4mult(modelT, util::mat4mult(modelRy, modelRx)))));
 
         GLint MV = glGetUniformLocation(myShader.id(), "MV");
         glUseProgram(myShader.id());
         glUniformMatrix4fv(MV, 1, GL_FALSE, modelView.data());
 
-        // "INVERSE TRANSPOSE?"
         GLint MV_normal = glGetUniformLocation(myShader.id(), "MV_normal");
         glUseProgram(myShader.id());
         glUniformMatrix4fv(MV_normal, 1, GL_FALSE, util::mat4toMat3(modelView).data());
 
         GLint P = glGetUniformLocation(myShader.id(), "P");
         glUseProgram(myShader.id());
-        glUniformMatrix4fv(P, 1, GL_FALSE, util::mat4perspective_T(M_PI/4, 1.0f, 0.1f, 100.0f).data());
+        glUniformMatrix4fv(P, 1, GL_FALSE,
+                           util::mat4perspective_T(M_PI / 4, 1.0f, 0.1f, 100.0f).data());
 
-        GLint locationRy = glGetUniformLocation(myShader.id(), "Ry");
-        glUseProgram(myShader.id());
-        glUniformMatrix4fv(locationRy, 1, GL_FALSE, util::mat4roty(time).data());  // 2PI revolutions?
-        /*
-        
+        myMouseRotator.poll();
+
         GLint locationRx = glGetUniformLocation(myShader.id(), "Rx");
         glUseProgram(myShader.id());
-        glUniformMatrix4fv(locationRx, 1, GL_FALSE, util::mat4rotx(M_PI/8).data());
+        glUniformMatrix4fv(locationRx, 1, GL_FALSE, util::mat4rotx(-myMouseRotator.theta()).data());
 
         GLint locationRz = glGetUniformLocation(myShader.id(), "Rz");
         glUseProgram(myShader.id());
-        glUniformMatrix4fv(locationRz, 1, GL_FALSE, util::mat4rotz(time).data());
+        glUniformMatrix4fv(locationRz, 1, GL_FALSE, util::mat4rotz(myMouseRotator.phi()).data());
+
+        GLint locationRy = glGetUniformLocation(myShader.id(), "Ry");
+        glUseProgram(myShader.id());
+        glUniformMatrix4fv(locationRy, 1, GL_FALSE, util::mat4roty(0).data());
+        /*
+
 
 
         std::array<GLfloat, 16> planeT = {util::mat4mult(
@@ -347,7 +356,7 @@ int main(int, char*[]) {
                     matTranspose, util::mat4roty(time * 3))))
         };
 
-        
+
         GLint locationT = glGetUniformLocation(myShader.id(), "T");
         glUseProgram(myShader.id());
         glUniformMatrix4fv(locationT, 1, GL_FALSE, planeT.data());
@@ -360,14 +369,24 @@ int main(int, char*[]) {
         glUseProgram(myShader.id());
         glUniform1i(locationTex, 0);
 
-        myShape.render();
-        //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        // myShape.render();
+        // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
         glBindTexture(GL_TEXTURE_2D, 0);
         glUseProgram(0);
 
-
         glUseProgram(myShader.id());  // Activate the shader to set its variables
+
+        myKeyRotator.poll();
+
+        std::array<float, 16> lightDir = util::mat4mult(util::mat4roty(myKeyRotator.phi()), util::mat4rotx(-myKeyRotator.theta()));
+
+        //std::array<float, 16> lightDir = util::mat4rotx(-myKeyRotator.theta());
+
+        GLint lightTransform = glGetUniformLocation(myShader.id(), "lightTransform");
+        glUseProgram(myShader.id());
+        glUniformMatrix4fv(lightTransform, 1, GL_FALSE, lightDir.data());
+
 
         viewT = util::mat4translate(0.0f, 0.0f, -3.0f);
 
@@ -375,7 +394,7 @@ int main(int, char*[]) {
 
         modelRx = util::mat4rotx(0);
 
-        modelRy = util::mat4roty(time);
+        modelRy = util::mat4roty(0);
 
         modelView =
             util::mat4mult(viewT, util::mat4mult(viewRx, util::mat4mult(modelRy, modelRx)));
@@ -394,10 +413,19 @@ int main(int, char*[]) {
         glUniformMatrix4fv(P, 1, GL_FALSE,
                            util::mat4perspective_T(M_PI / 4, 1.0f, 0.1f, 100.0f).data());
 
+        myMouseRotator.poll();
+
         locationRy = glGetUniformLocation(myShader.id(), "Ry");
         glUseProgram(myShader.id());
-        glUniformMatrix4fv(locationRy, 1, GL_FALSE,
-                           util::mat4roty(time).data());  // 2PI revolutions?
+        glUniformMatrix4fv(locationRy, 1, GL_FALSE, util::mat4roty(myMouseRotator.phi()).data());  // 2PI revolutions?
+
+        locationRx = glGetUniformLocation(myShader.id(), "Rx");
+        glUseProgram(myShader.id());
+        glUniformMatrix4fv(locationRx, 1, GL_FALSE, util::mat4rotx(myMouseRotator.theta()).data());
+
+        locationRz = glGetUniformLocation(myShader.id(), "Rz");
+        glUseProgram(myShader.id());
+        glUniformMatrix4fv(locationRz, 1, GL_FALSE, util::mat4rotz(0).data());
 
         glBindTexture(GL_TEXTURE_2D, myTexture2.id());
 

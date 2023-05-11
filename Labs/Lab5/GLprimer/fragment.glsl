@@ -15,7 +15,7 @@ vec3 Id = vec3(1.0, 1.0, 1.0)*0.5;
 vec3 kd = vec3(texture(tex, st));
 vec3 Is = vec3(0.6, 0.6, 0.6);
 vec3 ks = vec3(0.6, 0.6, 0.6);
-float n = 1;
+float n = 5;
 
 void main() {
 	//finalcolor = texture(tex, st);

@@ -3,15 +3,17 @@
 uniform float time;
 
 /*
-uniform mat4 Rx;
-uniform mat4 Rz;
 uniform mat4 T;
 */
+uniform mat4 Rx;
 uniform mat4 Ry;
+uniform mat4 Rz;
 
 uniform mat4 MV;
 uniform mat3 MV_normal;
 uniform mat4 P;
+
+uniform mat4 lightTransform;
 
 layout(location = 0) in vec3 Position;
 layout(location = 1) in vec3 Normal;
@@ -22,8 +24,8 @@ out vec2 st;
 out vec3 lightDirection;
 
 void main() {
-	lightDirection = vec3(1.0, 0.0, 1.0);
-	gl_Position = P * MV * vec4(Position, 1); // Special, required output
+	lightDirection = mat3(lightTransform) * vec3(0.0, 0.0, 1.0);
+	gl_Position = P * MV * Rx * Ry * Rz * vec4(Position, 1); // Special, required output
 
 	//vec3 MV_norm = vec3(MV);
 
