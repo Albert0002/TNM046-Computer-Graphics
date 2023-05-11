@@ -243,7 +243,7 @@ int main(int, char*[]) {
 
     //myShape.createTriangle();
 
-    //myShape2.createSphere(0.5, 600);
+    myShape.createSphere(0.5, 600);
 
     //myShape.createBox(0.5, 0.5, 0.5);
 
@@ -308,11 +308,11 @@ int main(int, char*[]) {
 
         std::array<float, 16> modelRx = util::mat4rotx(-M_PI / 2);
 
-        std::array<float, 16> modelRy = util::mat4roty(0);  //
+        std::array<float, 16> modelRy = util::mat4roty(time);  //
 
-        std::array<float, 16> modelOrbit = util::mat4roty(M_PI);  // ?
+        std::array<float, 16> modelOrbit = util::mat4roty(time);  // ?
 
-        std::array<float, 16> modelT = util::mat4translate(0.0f, 0.0f, 0.0f);
+        std::array<float, 16> modelT = util::mat4translate(0.0f, 0.0f, 3.0f);
 
         std::array<float, 16> modelView = util::mat4mult(
             viewT,
@@ -333,15 +333,15 @@ int main(int, char*[]) {
         glUniformMatrix4fv(P, 1, GL_FALSE,
                            util::mat4perspective_T(M_PI / 4, 1.0f, 0.1f, 100.0f).data());
 
-        myMouseRotator.poll();
+        //myMouseRotator.poll();
 
         GLint locationRx = glGetUniformLocation(myShader.id(), "Rx");
         glUseProgram(myShader.id());
-        glUniformMatrix4fv(locationRx, 1, GL_FALSE, util::mat4rotx(-myMouseRotator.theta()).data());
+        glUniformMatrix4fv(locationRx, 1, GL_FALSE, util::mat4rotx(0).data());
 
         GLint locationRz = glGetUniformLocation(myShader.id(), "Rz");
         glUseProgram(myShader.id());
-        glUniformMatrix4fv(locationRz, 1, GL_FALSE, util::mat4rotz(myMouseRotator.phi()).data());
+        glUniformMatrix4fv(locationRz, 1, GL_FALSE, util::mat4rotz(0).data());
 
         GLint locationRy = glGetUniformLocation(myShader.id(), "Ry");
         glUseProgram(myShader.id());
@@ -369,7 +369,7 @@ int main(int, char*[]) {
         glUseProgram(myShader.id());
         glUniform1i(locationTex, 0);
 
-        // myShape.render();
+         myShape.render();
         // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
         glBindTexture(GL_TEXTURE_2D, 0);
